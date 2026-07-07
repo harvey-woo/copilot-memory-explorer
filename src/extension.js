@@ -37,12 +37,13 @@ function activate(context) {
   // Click to open file + show preview in panel
   context.subscriptions.push(
     vscode.commands.registerCommand('memoryBoard.openFile', (item) => {
-      if (item && item.filePath) {
+      const fp = item?.resourceUri?.fsPath || item?.filePath;
+      if (fp) {
         // Open in editor
-        vscode.workspace.openTextDocument(vscode.Uri.file(item.filePath))
+        vscode.workspace.openTextDocument(vscode.Uri.file(fp))
           .then(doc => vscode.window.showTextDocument(doc, { preview: true }));
         // Also show in preview panel
-        previewProvider.showPreview(item.filePath);
+        previewProvider.showPreview(fp);
       }
     })
   );
@@ -50,8 +51,9 @@ function activate(context) {
   // Context menu: Copy Path
   context.subscriptions.push(
     vscode.commands.registerCommand('memoryBoard.copyPath', (item) => {
-      if (item && item.filePath) {
-        vscode.env.clipboard.writeText(item.filePath);
+      const fp = item?.resourceUri?.fsPath || item?.filePath;
+      if (fp) {
+        vscode.env.clipboard.writeText(fp);
       }
     })
   );
@@ -59,8 +61,9 @@ function activate(context) {
   // Context menu: Reveal in Finder
   context.subscriptions.push(
     vscode.commands.registerCommand('memoryBoard.revealInOs', (item) => {
-      if (item && item.filePath) {
-        vscode.commands.executeCommand('revealFileInOS', vscode.Uri.file(item.filePath));
+      const fp = item?.resourceUri?.fsPath || item?.filePath;
+      if (fp) {
+        vscode.commands.executeCommand('revealFileInOS', vscode.Uri.file(fp));
       }
     })
   );
@@ -75,8 +78,9 @@ function activate(context) {
   // Delete entry (file, directory, or session)
   context.subscriptions.push(
     vscode.commands.registerCommand('memoryBoard.deleteEntry', async (item) => {
-      if (!item || !item.filePath) return;
-      const uri = vscode.Uri.file(item.filePath);
+      const fp = item?.resourceUri?.fsPath || item?.filePath;
+      if (!fp) return;
+      const uri = vscode.Uri.file(fp);
       const stat = await vscode.workspace.fs.stat(uri);
       const isDir = stat.type === vscode.FileType.Directory;
       const name = path.basename(item.filePath);
@@ -106,12 +110,13 @@ function activate(context) {
     vscode.commands.registerCommand('memoryBoard.newMemory', async (item) => {
       // Determine target directory
       let targetDir = '';
-      if (item && item.filePath) {
-        const stat = await vscode.workspace.fs.stat(vscode.Uri.file(item.filePath));
+      const fp = item?.resourceUri?.fsPath || item?.filePath;
+      if (fp) {
+        const stat = await vscode.workspace.fs.stat(vscode.Uri.file(fp));
         if (stat.type === vscode.FileType.Directory) {
-          targetDir = item.filePath;
+          targetDir = fp;
         } else {
-          targetDir = path.dirname(item.filePath);
+          targetDir = path.dirname(fp);
         }
       } else if (provider._currentWorkspaceId && provider._parser) {
         // Default to repo directory
@@ -157,8 +162,9 @@ function activate(context) {
   // Preview in panel command
   context.subscriptions.push(
     vscode.commands.registerCommand('memoryBoard.previewInPanel', (item) => {
-      if (item && item.filePath) {
-        previewProvider.showPreview(item.filePath);
+      const fp = item?.resourceUri?.fsPath || item?.filePath;
+      if (fp) {
+        previewProvider.showPreview(fp);
       }
     })
   );
@@ -188,6 +194,10 @@ class MemoryTreeItem extends vscode.TreeItem {
     this.sessionId = sessionId;
     this.contextValue = type;
 
+    if (filePath) {
+      this.resourceUri = vscode.Uri.file(filePath);
+    }
+
     if (type === ITEM_TYPE.WORKSPACE) {
       this.iconPath = new vscode.ThemeIcon('database');
       this.tooltip = filePath || label;
@@ -203,7 +213,7 @@ class MemoryTreeItem extends vscode.TreeItem {
       this.command = {
         command: 'memoryBoard.openFile',
         title: 'Open',
-        arguments: [this],
+        arguments: [{ filePath: this.filePath }],
       };
     } else if (type === ITEM_TYPE.LOADING) {
       this.iconPath = new vscode.ThemeIcon('loading~spin');

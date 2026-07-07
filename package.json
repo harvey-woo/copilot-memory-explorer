@@ -7,7 +7,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/agedstudio/copilot-memory-explorer"
+    "url": "https://github.com/harvey-woo/copilot-memory-explorer"
   },
   "engines": {
     "vscode": "^1.96.0"
