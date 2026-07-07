@@ -2,7 +2,7 @@
   "name": "copilot-memory-explorer",
   "displayName": "Copilot Memory Explorer",
   "description": "Browse and manage GitHub Copilot's memory files with native VS Code context menus",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "cat5th",
   "license": "MIT",
   "repository": {
