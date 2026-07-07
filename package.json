@@ -1,0 +1,150 @@
+{
+  "name": "copilot-memory-explorer",
+  "displayName": "Copilot Memory Explorer",
+  "description": "Browse and manage GitHub Copilot's memory files with native VS Code context menus",
+  "version": "0.1.0",
+  "publisher": "cat5th",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agedstudio/copilot-memory-explorer"
+  },
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "categories": [
+    "AI",
+    "Visualization",
+    "Other"
+  ],
+  "keywords": [
+    "copilot",
+    "memory",
+    "explorer",
+    "github-copilot",
+    "memory-management",
+    "visualization"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./src/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "memory-explorer-sidebar",
+          "title": "Memory Explorer",
+          "icon": "media/icon.svg"
+        }
+      ],
+      "panel": [
+        {
+          "id": "memory-preview-panel",
+          "title": "Memory Preview",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "memory-explorer-sidebar": [
+        {
+          "id": "memoryExplorer.mainView",
+          "name": "Memory Explorer",
+          "type": "tree"
+        }
+      ],
+      "memory-preview-panel": [
+        {
+          "id": "memoryExplorer.previewView",
+          "name": "Preview",
+          "type": "webview"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "memoryBoard.refresh",
+        "title": "Refresh",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "memoryBoard.openFile",
+        "title": "Open File"
+      },
+      {
+        "command": "memoryBoard.copyPath",
+        "title": "Copy Path"
+      },
+      {
+        "command": "memoryBoard.revealInOs",
+        "title": "Reveal in Finder"
+      },
+      {
+        "command": "memoryBoard.toggleSort",
+        "title": "Toggle Sort (Name/Date)",
+        "icon": "$(sort-precedence)"
+      },
+      {
+        "command": "memoryBoard.deleteEntry",
+        "title": "Delete",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "memoryBoard.newMemory",
+        "title": "New Memory",
+        "icon": "$(new-file)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "memoryBoard.refresh",
+          "group": "navigation",
+          "when": "view == memoryExplorer.mainView"
+        },
+        {
+          "command": "memoryBoard.toggleSort",
+          "group": "navigation",
+          "when": "view == memoryExplorer.mainView"
+        },
+        {
+          "command": "memoryBoard.newMemory",
+          "group": "navigation",
+          "when": "view == memoryExplorer.mainView"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "memoryBoard.copyPath",
+          "when": "view == memoryExplorer.mainView && viewItem == 'file'"
+        },
+        {
+          "command": "memoryBoard.revealInOs",
+          "when": "view == memoryExplorer.mainView && (viewItem == 'file' || viewItem == 'directory' || viewItem == 'session')"
+        },
+        {
+          "command": "memoryBoard.openFile",
+          "when": "view == memoryExplorer.mainView && viewItem == 'file'"
+        },
+        {
+          "command": "memoryBoard.newMemory",
+          "when": "view == memoryExplorer.mainView && (viewItem == 'directory' || viewItem == 'session')"
+        },
+        {
+          "command": "memoryBoard.deleteEntry",
+          "when": "view == memoryExplorer.mainView && (viewItem == 'file' || viewItem == 'directory' || viewItem == 'session')"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "lint": "eslint src/",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.96.0",
+    "eslint": "^9.0.0",
+    "@vscode/vsce": "^3.0.0"
+  }
+}
