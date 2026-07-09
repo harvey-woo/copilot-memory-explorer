@@ -1,0 +1,15 @@
+{
+  "ext.displayName": "Copilot Memory Explorer",
+  "ext.description": "VS Code のネイティブ UI で GitHub Copilot のメモリファイルを閲覧・管理",
+  "memoryExplorer.viewContainer.title": "Copilot Memories",
+  "memoryPreview.viewContainer.title": "Copilot Memories",
+  "memoryExplorer.view.name": "Copilot Memories",
+  "memoryPreview.view.name": "プレビュー",
+  "cmd.refresh": "更新",
+  "cmd.openFile": "ファイルを開く",
+  "cmd.copyPath": "パスをコピー",
+  "cmd.revealInOs": "Finder で表示",
+  "cmd.toggleSort": "並び替え（名前/日付）",
+  "cmd.deleteEntry": "削除",
+  "cmd.newMemory": "新規メモリ"
+}

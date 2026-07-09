@@ -1,0 +1,15 @@
+{
+  "ext.displayName": "Copilot Memory Explorer",
+  "ext.description": "用 VS Code 原生界面浏览和管理 GitHub Copilot 的记忆文件",
+  "memoryExplorer.viewContainer.title": "Copilot 记忆",
+  "memoryPreview.viewContainer.title": "Copilot 记忆",
+  "memoryExplorer.view.name": "Copilot 记忆",
+  "memoryPreview.view.name": "预览",
+  "cmd.refresh": "刷新",
+  "cmd.openFile": "打开文件",
+  "cmd.copyPath": "复制路径",
+  "cmd.revealInOs": "在访达中显示",
+  "cmd.toggleSort": "切换排序（名称/日期）",
+  "cmd.deleteEntry": "删除",
+  "cmd.newMemory": "新建记忆"
+}

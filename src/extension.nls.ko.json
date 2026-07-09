@@ -1,0 +1,15 @@
+{
+  "delete.confirm.file": "파일 \"{0}\"을(를) 삭제하시겠습니까?",
+  "delete.confirm.directory": "디렉터리 \"{0}\"을(를) 삭제하시겠습니까?",
+  "delete.label": "삭제",
+  "delete.failed": "삭제 실패：{0}",
+  "newMemory.prompt": "메모리 파일 이름 입력",
+  "newMemory.placeholder": "my-memory.md",
+  "newMemory.validate": "파일 이름은 필수입니다",
+  "newMemory.contentPrompt": "메모리 내용 입력（선택사항）",
+  "newMemory.contentPlaceholder": "# 내 메모리\n\n주요 정보...",
+  "newMemory.failed": "메모리 생성 실패：{0}",
+  "newMemory.noDir": "대상 디렉터리를 확인할 수 없습니다.",
+  "preview.empty": "Copilot Memories에서 파일을 선택하면 미리보기 표시",
+  "tree.empty": "아직 메모리가 없습니다. 위 + 버튼으로 생성"
+}

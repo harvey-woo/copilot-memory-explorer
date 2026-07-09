@@ -1,0 +1,15 @@
+{
+  "ext.displayName": "Copilot Memory Explorer",
+  "ext.description": "Navegue e gerencie os arquivos de memória do GitHub Copilot com a interface nativa do VS Code",
+  "memoryExplorer.viewContainer.title": "Copilot Memories",
+  "memoryPreview.viewContainer.title": "Copilot Memories",
+  "memoryExplorer.view.name": "Copilot Memories",
+  "memoryPreview.view.name": "Visualização",
+  "cmd.refresh": "Atualizar",
+  "cmd.openFile": "Abrir arquivo",
+  "cmd.copyPath": "Copiar caminho",
+  "cmd.revealInOs": "Mostrar no Finder",
+  "cmd.toggleSort": "Ordenar (Nome/Data)",
+  "cmd.deleteEntry": "Excluir",
+  "cmd.newMemory": "Nova memória"
+}

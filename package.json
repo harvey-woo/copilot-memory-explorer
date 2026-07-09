@@ -1,9 +1,10 @@
 {
   "name": "copilot-memory-explorer",
-  "displayName": "Copilot Memory Explorer",
-  "description": "Browse and manage GitHub Copilot's memory files with native VS Code context menus",
+  "displayName": "%ext.displayName%",
+  "description": "%ext.description%",
   "version": "0.1.1",
   "publisher": "cat5th",
+  "icon": "media/marketplace-icon.png",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -34,14 +35,14 @@
       "activitybar": [
         {
           "id": "memory-explorer-sidebar",
-          "title": "Memory Explorer",
+          "title": "%memoryExplorer.viewContainer.title%",
           "icon": "media/icon.svg"
         }
       ],
       "panel": [
         {
           "id": "memory-preview-panel",
-          "title": "Memory Preview",
+          "title": "%memoryPreview.viewContainer.title%",
           "icon": "media/icon.svg"
         }
       ]
@@ -50,14 +51,14 @@
       "memory-explorer-sidebar": [
         {
           "id": "memoryExplorer.mainView",
-          "name": "Memory Explorer",
+          "name": "%memoryExplorer.view.name%",
           "type": "tree"
         }
       ],
       "memory-preview-panel": [
         {
           "id": "memoryExplorer.previewView",
-          "name": "Preview",
+          "name": "%memoryPreview.view.name%",
           "type": "webview"
         }
       ]
@@ -65,34 +66,34 @@
     "commands": [
       {
         "command": "memoryBoard.refresh",
-        "title": "Refresh",
+        "title": "%cmd.refresh%",
         "icon": "$(refresh)"
       },
       {
         "command": "memoryBoard.openFile",
-        "title": "Open File"
+        "title": "%cmd.openFile%"
       },
       {
         "command": "memoryBoard.copyPath",
-        "title": "Copy Path"
+        "title": "%cmd.copyPath%"
       },
       {
         "command": "memoryBoard.revealInOs",
-        "title": "Reveal in Finder"
+        "title": "%cmd.revealInOs%"
       },
       {
         "command": "memoryBoard.toggleSort",
-        "title": "Toggle Sort (Name/Date)",
+        "title": "%cmd.toggleSort%",
         "icon": "$(sort-precedence)"
       },
       {
         "command": "memoryBoard.deleteEntry",
-        "title": "Delete",
+        "title": "%cmd.deleteEntry%",
         "icon": "$(trash)"
       },
       {
         "command": "memoryBoard.newMemory",
-        "title": "New Memory",
+        "title": "%cmd.newMemory%",
         "icon": "$(new-file)"
       }
     ],
@@ -144,7 +145,10 @@
   },
   "devDependencies": {
     "@types/vscode": "^1.96.0",
-    "eslint": "^9.0.0",
-    "@vscode/vsce": "^3.0.0"
+    "@vscode/vsce": "^3.0.0",
+    "eslint": "^9.0.0"
+  },
+  "dependencies": {
+    "vscode-nls": "^5.2.0"
   }
 }

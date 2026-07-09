@@ -1,0 +1,15 @@
+{
+  "delete.confirm.file": "ファイル \"{0}\" を削除しますか？",
+  "delete.confirm.directory": "ディレクトリ \"{0}\" を削除しますか？",
+  "delete.label": "削除",
+  "delete.failed": "削除に失敗しました：{0}",
+  "newMemory.prompt": "メモリファイル名を入力",
+  "newMemory.placeholder": "my-memory.md",
+  "newMemory.validate": "ファイル名は必須です",
+  "newMemory.contentPrompt": "メモリ内容を入力（任意）",
+  "newMemory.contentPlaceholder": "# メモリ\n\n重要な情報...",
+  "newMemory.failed": "メモリの作成に失敗しました：{0}",
+  "newMemory.noDir": "対象ディレクトリを特定できませんでした。",
+  "preview.empty": "Copilot Memories でファイルを選択するとプレビュー表示",
+  "tree.empty": "まだメモリがありません。上の + ボタンで作成"
+}

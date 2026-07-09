@@ -1,0 +1,15 @@
+{
+  "delete.confirm.file": "Удалить файл \"{0}\"？",
+  "delete.confirm.directory": "Удалить каталог \"{0}\"？",
+  "delete.label": "Удалить",
+  "delete.failed": "Не удалось удалить：{0}",
+  "newMemory.prompt": "Введите имя файла памяти",
+  "newMemory.placeholder": "my-memory.md",
+  "newMemory.validate": "Имя файла обязательно",
+  "newMemory.contentPrompt": "Введите содержимое (необязательно)",
+  "newMemory.contentPlaceholder": "# Моя память\n\nКлючевая информация...",
+  "newMemory.failed": "Не удалось создать память：{0}",
+  "newMemory.noDir": "Не удалось определить целевой каталог.",
+  "preview.empty": "Выберите файл в Copilot Memories для предпросмотра",
+  "tree.empty": "Память пуста. Создайте запись кнопкой + выше"
+}

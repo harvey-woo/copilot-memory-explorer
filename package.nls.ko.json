@@ -1,0 +1,15 @@
+{
+  "ext.displayName": "Copilot Memory Explorer",
+  "ext.description": "VS Code 네이티브 UI로 GitHub Copilot 메모리 파일을 탐색하고 관리",
+  "memoryExplorer.viewContainer.title": "Copilot Memories",
+  "memoryPreview.viewContainer.title": "Copilot Memories",
+  "memoryExplorer.view.name": "Copilot Memories",
+  "memoryPreview.view.name": "미리보기",
+  "cmd.refresh": "새로고침",
+  "cmd.openFile": "파일 열기",
+  "cmd.copyPath": "경로 복사",
+  "cmd.revealInOs": "Finder에서 보기",
+  "cmd.toggleSort": "정렬 전환（이름/날짜）",
+  "cmd.deleteEntry": "삭제",
+  "cmd.newMemory": "새 메모리"
+}

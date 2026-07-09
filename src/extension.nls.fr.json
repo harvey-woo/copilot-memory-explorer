@@ -1,0 +1,15 @@
+{
+  "delete.confirm.file": "Supprimer le fichier \"{0}\"？",
+  "delete.confirm.directory": "Supprimer le répertoire \"{0}\"？",
+  "delete.label": "Supprimer",
+  "delete.failed": "Échec de la suppression：{0}",
+  "newMemory.prompt": "Entrez le nom du fichier mémoire",
+  "newMemory.placeholder": "my-memory.md",
+  "newMemory.validate": "Le nom du fichier est requis",
+  "newMemory.contentPrompt": "Entrez le contenu (optionnel)",
+  "newMemory.contentPlaceholder": "# Ma mémoire\n\nInformations clés...",
+  "newMemory.failed": "Échec de création de la mémoire：{0}",
+  "newMemory.noDir": "Impossible de déterminer le répertoire cible.",
+  "preview.empty": "Sélectionnez un fichier dans Copilot Memories pour prévisualiser",
+  "tree.empty": "Aucune mémoire. Créez-en une avec le bouton + ci-dessus"
+}
