@@ -1,5 +1,17 @@
 # Change Log
 
+## [0.1.3] - 2026-07-09
+
+### Changed
+
+- Migrated from vscode-nls to vscode.l10n built-in API for reliable localization
+- Extension runtime translations moved from `src/extension.nls.*.json` to `l10n/bundle.l10n.*.json`
+
+### Fixed
+
+- Localization not working in packaged extension (vscode-nls path resolution issue)
+- Delete confirmation button comparison now uses localized string
+
 ## [0.1.2] - 2026-07-09
 
 ### Added
