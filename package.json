@@ -5,6 +5,7 @@
   "version": "0.1.2",
   "publisher": "cat5th",
   "icon": "media/marketplace-icon.png",
+  "l10n": "./l10n",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -147,8 +148,5 @@
     "@types/vscode": "^1.96.0",
     "@vscode/vsce": "^3.0.0",
     "eslint": "^9.0.0"
-  },
-  "dependencies": {
-    "vscode-nls": "^5.2.0"
   }
 }

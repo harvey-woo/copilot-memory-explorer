@@ -1,0 +1,15 @@
+{
+  "Delete file \"{0}\"?": "确定删除文件 \"{0}\" 吗？",
+  "Delete directory \"{0}\"?": "确定删除目录 \"{0}\" 吗？",
+  "Delete": "删除",
+  "Failed to delete: {0}": "删除失败：{0}",
+  "Enter memory file name": "输入记忆文件名称",
+  "my-memory.md": "my-memory.md",
+  "File name is required": "文件名称不能为空",
+  "Enter memory content (optional)": "输入记忆内容（可选）",
+  "# My Memory\n\nKey information...": "# 我的记忆\n\n关键信息...",
+  "Failed to create memory: {0}": "创建记忆失败：{0}",
+  "Could not determine target directory.": "无法确定目标目录。",
+  "Select a file in Copilot Memories to preview": "在 Copilot 记忆中选择一个文件以预览",
+  "No memories yet. Create one with the + button above.": "暂无记忆，点击上方 + 按钮创建"
+}

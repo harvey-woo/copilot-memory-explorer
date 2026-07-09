@@ -1,0 +1,15 @@
+{
+  "Delete file \"{0}\"?": "ファイル \"{0}\" を削除しますか？",
+  "Delete directory \"{0}\"?": "ディレクトリ \"{0}\" を削除しますか？",
+  "Delete": "削除",
+  "Failed to delete: {0}": "削除に失敗しました：{0}",
+  "Enter memory file name": "メモリファイル名を入力",
+  "my-memory.md": "my-memory.md",
+  "File name is required": "ファイル名は必須です",
+  "Enter memory content (optional)": "メモリ内容を入力（任意）",
+  "# My Memory\n\nKey information...": "# メモリ\n\n重要な情報...",
+  "Failed to create memory: {0}": "メモリの作成に失敗しました：{0}",
+  "Could not determine target directory.": "対象ディレクトリを特定できませんでした。",
+  "Select a file in Copilot Memories to preview": "Copilot Memories でファイルを選択するとプレビュー表示",
+  "No memories yet. Create one with the + button above.": "まだメモリがありません。上の + ボタンで作成"
+}

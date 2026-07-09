@@ -1,0 +1,15 @@
+{
+  "Delete file \"{0}\"?": "Supprimer le fichier \"{0}\"？",
+  "Delete directory \"{0}\"?": "Supprimer le répertoire \"{0}\"？",
+  "Delete": "Supprimer",
+  "Failed to delete: {0}": "Échec de la suppression：{0}",
+  "Enter memory file name": "Entrez le nom du fichier mémoire",
+  "my-memory.md": "my-memory.md",
+  "File name is required": "Le nom du fichier est requis",
+  "Enter memory content (optional)": "Entrez le contenu (optionnel)",
+  "# My Memory\n\nKey information...": "# Ma mémoire\n\nInformations clés...",
+  "Failed to create memory: {0}": "Échec de création de la mémoire：{0}",
+  "Could not determine target directory.": "Impossible de déterminer le répertoire cible.",
+  "Select a file in Copilot Memories to preview": "Sélectionnez un fichier dans Copilot Memories pour prévisualiser",
+  "No memories yet. Create one with the + button above.": "Aucune mémoire. Créez-en une avec le bouton + ci-dessus"
+}

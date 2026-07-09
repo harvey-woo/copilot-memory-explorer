@@ -5,14 +5,10 @@ const vscode = require('vscode');
 const path = require('path');
 const { MemoryParser, DEFAULT_SESSION_IDS } = require('./memory-parser');
 
-// --- i18n (defensive, with fallback) ---
-let localize = (key, def, ...args) => def.replace(/\{(\d+)\}/g, (_, i) => args[i] ?? '');
-try {
-  const nls = require('vscode-nls');
-  localize = nls.config({ messageFormat: nls.MessageFormat.file })();
-} catch (e) {
-  console.warn('[Memory Explorer] vscode-nls init failed, using fallback:', e.message);
-}
+// --- i18n: vscode.l10n.t ---
+const localize = (msg, ...args) => {
+  try { return vscode.l10n.t(msg, ...args); } catch { return msg; }
+};
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -94,12 +90,13 @@ function activate(context) {
       const isDir = stat.type === vscode.FileType.Directory;
       const name = path.basename(item.filePath);
 
+      const deleteLabel = localize('Delete');
       const confirm = await vscode.window.showWarningMessage(
-        localize(isDir ? 'delete.confirm.directory' : 'delete.confirm.file', isDir ? 'Delete directory "{0}"?' : 'Delete file "{0}"?', name),
+        localize(isDir ? 'Delete directory "{0}"?' : 'Delete file "{0}"?', name),
         { modal: true },
-        localize('delete.label', 'Delete')
+        deleteLabel
       );
-      if (confirm !== 'Delete') return;
+      if (confirm !== deleteLabel) return;
 
       try {
         if (isDir) {
@@ -109,7 +106,7 @@ function activate(context) {
         }
         provider.refresh();
       } catch (err) {
-        vscode.window.showErrorMessage(localize('delete.failed', 'Failed to delete: {0}', err.message));
+        vscode.window.showErrorMessage(localize('Failed to delete: {0}', err.message));
       }
     })
   );
@@ -134,23 +131,23 @@ function activate(context) {
       }
 
       if (!targetDir) {
-        vscode.window.showErrorMessage(localize('newMemory.noDir', 'Could not determine target directory.'));
+        vscode.window.showErrorMessage(localize('Could not determine target directory.'));
         return;
       }
 
       // Ask for file name
       const name = await vscode.window.showInputBox({
-        prompt: localize('newMemory.prompt', 'Enter memory file name'),
-        placeHolder: localize('newMemory.placeholder', 'my-memory.md'),
+        prompt: localize('Enter memory file name'),
+        placeHolder: localize('my-memory.md'),
         value: 'my-memory.md',
-        validateInput: (v) => v.trim() ? null : localize('newMemory.validate', 'File name is required'),
+        validateInput: (v) => v.trim() ? null : localize('File name is required'),
       });
       if (!name) return;
 
       // Ask for content
       const content = await vscode.window.showInputBox({
-        prompt: localize('newMemory.contentPrompt', 'Enter memory content (optional)'),
-        placeHolder: localize('newMemory.contentPlaceholder', '# My Memory\n\nKey information...'),
+        prompt: localize('Enter memory content (optional)'),
+        placeHolder: localize('# My Memory\n\nKey information...'),
         value: '',
       });
 
@@ -163,7 +160,7 @@ function activate(context) {
         const doc = await vscode.workspace.openTextDocument(uri);
         await vscode.window.showTextDocument(doc, { preview: true });
       } catch (err) {
-        vscode.window.showErrorMessage(localize('newMemory.failed', 'Failed to create memory: {0}', err.message));
+        vscode.window.showErrorMessage(localize('Failed to create memory: {0}', err.message));
       }
     })
   );
@@ -475,7 +472,7 @@ class MemoryTreeProvider {
 
   _emptyItem() {
     return new MemoryTreeItem(
-      localize('tree.empty', 'No memories yet. Create one with the + button above.'),
+      localize('No memories yet. Create one with the + button above.'),
       vscode.TreeItemCollapsibleState.None,
       ITEM_TYPE.EMPTY,
     );
@@ -526,6 +523,7 @@ class MemoryPreviewProvider {
 
   _getEmptyHtml(webview) {
     const nonce = getNonce();
+    const emptyText = localize('Select a file in Copilot Memories to preview');
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -551,7 +549,7 @@ class MemoryPreviewProvider {
   </style>
 </head>
 <body>
-  <div class="empty">${localize('preview.empty', 'Select a file in Memory Explorer to preview')}</div>
+  <div class="empty">${emptyText}</div>
 </body>
 </html>`;
   }

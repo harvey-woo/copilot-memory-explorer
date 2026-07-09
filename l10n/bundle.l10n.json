@@ -1,0 +1,15 @@
+{
+  "Delete file \"{0}\"?": "Delete file \"{0}\"?",
+  "Delete directory \"{0}\"?": "Delete directory \"{0}\"?",
+  "Delete": "Delete",
+  "Failed to delete: {0}": "Failed to delete: {0}",
+  "Enter memory file name": "Enter memory file name",
+  "my-memory.md": "my-memory.md",
+  "File name is required": "File name is required",
+  "Enter memory content (optional)": "Enter memory content (optional)",
+  "# My Memory\n\nKey information...": "# My Memory\n\nKey information...",
+  "Failed to create memory: {0}": "Failed to create memory: {0}",
+  "Could not determine target directory.": "Could not determine target directory.",
+  "Select a file in Copilot Memories to preview": "Select a file in Copilot Memories to preview",
+  "No memories yet. Create one with the + button above.": "No memories yet. Create one with the + button above."
+}
