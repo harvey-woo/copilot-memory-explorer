@@ -1,5 +1,24 @@
 # Change Log
 
+## [0.1.2] - 2026-07-09
+
+### Added
+
+- Internationalization: vscode-nls with 10 languages (zh-cn, ja, ko, fr, de, es, ru, pt-BR, zh-tw, it)
+- Marketplace icon: white circle with Copilot + brain overlay
+- README translations: 5 languages (zh-cn, ja, ko, fr, de)
+- Empty state placeholder in TreeView
+- Usage demo animation (docs/usage-demo.webp)
+
+### Changed
+
+- New activity bar icon: Copilot with brain badge
+- README redesigned with logo, badges, and language switcher
+
+### Fixed
+
+- vscode-nls initialization failure fallback to prevent "command not found"
+
 ## [0.1.0] - 2026-07-07
 
 ### Added
