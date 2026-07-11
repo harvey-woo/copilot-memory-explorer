@@ -11,5 +11,6 @@
   "Failed to create memory: {0}": "Speichererstellung fehlgeschlagen：{0}",
   "Could not determine target directory.": "Konnte Zielverzeichnis nicht ermitteln.",
   "Select a file in Copilot Memories to preview": "Wählen Sie eine Datei in Copilot Memories zur Vorschau",
-  "No memories yet. Create one with the + button above.": "Noch keine Speicher. Erstellen Sie einen mit dem +-Button oben"
+  "No memories yet. Create one with the + button above.": "Noch keine Speicher. Erstellen Sie einen mit dem +-Button oben",
+  "No user memories yet.": "Noch keine Benutzerspeicher"
 }

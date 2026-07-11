@@ -39,28 +39,25 @@
           "title": "%memoryExplorer.viewContainer.title%",
           "icon": "media/icon.svg"
         }
-      ],
-      "panel": [
-        {
-          "id": "memory-preview-panel",
-          "title": "%memoryPreview.viewContainer.title%",
-          "icon": "media/icon.svg"
-        }
       ]
     },
     "views": {
       "memory-explorer-sidebar": [
         {
-          "id": "memoryExplorer.mainView",
-          "name": "%memoryExplorer.view.name%",
+          "id": "memoryExplorer.projectView",
+          "name": "%memoryExplorer.projectView.name%",
           "type": "tree"
-        }
-      ],
-      "memory-preview-panel": [
+        },
+        {
+          "id": "memoryExplorer.userView",
+          "name": "%memoryExplorer.userView.name%",
+          "type": "tree"
+        },
         {
           "id": "memoryExplorer.previewView",
           "name": "%memoryPreview.view.name%",
-          "type": "webview"
+          "type": "webview",
+          "visibility": "hidden"
         }
       ]
     },
@@ -96,6 +93,11 @@
         "command": "memoryBoard.newMemory",
         "title": "%cmd.newMemory%",
         "icon": "$(new-file)"
+      },
+      {
+        "command": "memoryBoard.refreshUser",
+        "title": "%cmd.refreshUser%",
+        "icon": "$(refresh)"
       }
     ],
     "menus": {
@@ -103,39 +105,60 @@
         {
           "command": "memoryBoard.refresh",
           "group": "navigation",
-          "when": "view == memoryExplorer.mainView"
+          "when": "view == memoryExplorer.projectView"
         },
         {
           "command": "memoryBoard.toggleSort",
           "group": "navigation",
-          "when": "view == memoryExplorer.mainView"
+          "when": "view == memoryExplorer.projectView"
         },
         {
           "command": "memoryBoard.newMemory",
           "group": "navigation",
-          "when": "view == memoryExplorer.mainView"
+          "when": "view == memoryExplorer.projectView"
+        },
+        {
+          "command": "memoryBoard.refreshUser",
+          "group": "navigation",
+          "when": "view == memoryExplorer.userView"
         }
       ],
       "view/item/context": [
         {
           "command": "memoryBoard.copyPath",
-          "when": "view == memoryExplorer.mainView && viewItem == 'file'"
+          "when": "view == memoryExplorer.projectView && viewItem == 'file'"
         },
         {
           "command": "memoryBoard.revealInOs",
-          "when": "view == memoryExplorer.mainView && (viewItem == 'file' || viewItem == 'directory' || viewItem == 'session')"
+          "when": "view == memoryExplorer.projectView && (viewItem == 'file' || viewItem == 'directory' || viewItem == 'session')"
         },
         {
           "command": "memoryBoard.openFile",
-          "when": "view == memoryExplorer.mainView && viewItem == 'file'"
+          "when": "view == memoryExplorer.projectView && viewItem == 'file'"
         },
         {
           "command": "memoryBoard.newMemory",
-          "when": "view == memoryExplorer.mainView && (viewItem == 'directory' || viewItem == 'session')"
+          "when": "view == memoryExplorer.projectView && (viewItem == 'directory' || viewItem == 'session')"
         },
         {
           "command": "memoryBoard.deleteEntry",
-          "when": "view == memoryExplorer.mainView && (viewItem == 'file' || viewItem == 'directory' || viewItem == 'session')"
+          "when": "view == memoryExplorer.projectView && (viewItem == 'file' || viewItem == 'directory' || viewItem == 'session')"
+        },
+        {
+          "command": "memoryBoard.copyPath",
+          "when": "view == memoryExplorer.userView && viewItem == 'file'"
+        },
+        {
+          "command": "memoryBoard.revealInOs",
+          "when": "view == memoryExplorer.userView && (viewItem == 'file' || viewItem == 'directory')"
+        },
+        {
+          "command": "memoryBoard.openFile",
+          "when": "view == memoryExplorer.userView && viewItem == 'file'"
+        },
+        {
+          "command": "memoryBoard.deleteEntry",
+          "when": "view == memoryExplorer.userView && (viewItem == 'file' || viewItem == 'directory')"
         }
       ]
     }

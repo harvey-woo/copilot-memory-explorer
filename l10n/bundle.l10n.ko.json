@@ -11,5 +11,6 @@
   "Failed to create memory: {0}": "메모리 생성 실패：{0}",
   "Could not determine target directory.": "대상 디렉터리를 확인할 수 없습니다.",
   "Select a file in Copilot Memories to preview": "Copilot Memories에서 파일을 선택하면 미리보기 표시",
-  "No memories yet. Create one with the + button above.": "아직 메모리가 없습니다. 위 + 버튼으로 생성"
+  "No memories yet. Create one with the + button above.": "아직 메모리가 없습니다. 위 + 버튼으로 생성",
+  "No user memories yet.": "사용자 메모리가 없습니다"
 }

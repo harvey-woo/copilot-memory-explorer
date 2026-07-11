@@ -11,5 +11,6 @@
   "Failed to create memory: {0}": "メモリの作成に失敗しました：{0}",
   "Could not determine target directory.": "対象ディレクトリを特定できませんでした。",
   "Select a file in Copilot Memories to preview": "Copilot Memories でファイルを選択するとプレビュー表示",
-  "No memories yet. Create one with the + button above.": "まだメモリがありません。上の + ボタンで作成"
+  "No memories yet. Create one with the + button above.": "まだメモリがありません。上の + ボタンで作成",
+  "No user memories yet.": "ユーザーメモリがありません"
 }

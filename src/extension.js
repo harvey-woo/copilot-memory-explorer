@@ -3,6 +3,7 @@
  */
 const vscode = require('vscode');
 const path = require('path');
+const fs = require('fs');
 const { MemoryParser, DEFAULT_SESSION_IDS } = require('./memory-parser');
 
 // --- i18n: vscode.l10n.t ---
@@ -16,15 +17,22 @@ const localize = (msg, ...args) => {
 function activate(context) {
   console.log('[Memory Explorer] Activating...');
 
-  const provider = new MemoryTreeProvider(context);
+  const projectProvider = new ProjectMemoryTreeProvider(context);
 
-  // Register TreeView
-  const treeView = vscode.window.createTreeView('memoryExplorer.mainView', {
-    treeDataProvider: provider,
+  // Register Project Memory TreeView
+  const projectTreeView = vscode.window.createTreeView('memoryExplorer.projectView', {
+    treeDataProvider: projectProvider,
   });
-  context.subscriptions.push(treeView);
+  context.subscriptions.push(projectTreeView);
 
-  // Memory Preview provider (must be created before commands that use it)
+  // Register User Memory TreeView
+  const userProvider = new UserMemoryTreeProvider(context);
+  const userTreeView = vscode.window.createTreeView('memoryExplorer.userView', {
+    treeDataProvider: userProvider,
+  });
+  context.subscriptions.push(userTreeView);
+
+  // Memory Preview provider (shared by both views)
   const previewProvider = new MemoryPreviewProvider(context);
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider('memoryExplorer.previewView', previewProvider, {
@@ -32,10 +40,17 @@ function activate(context) {
     })
   );
 
-  // Refresh command
+  // Refresh command for project view
   context.subscriptions.push(
     vscode.commands.registerCommand('memoryBoard.refresh', () => {
-      provider.refresh();
+      projectProvider.refresh();
+    })
+  );
+
+  // Refresh command for user view
+  context.subscriptions.push(
+    vscode.commands.registerCommand('memoryBoard.refreshUser', () => {
+      userProvider.refresh();
     })
   );
 
@@ -76,11 +91,9 @@ function activate(context) {
   // Sort: cycle through: name-asc → name-desc → date-desc → date-asc → name-asc
   context.subscriptions.push(
     vscode.commands.registerCommand('memoryBoard.toggleSort', () => {
-      provider.cycleSort();
+      projectProvider.cycleSort();
     })
   );
-
-  // Delete entry (file, directory, or session)
   context.subscriptions.push(
     vscode.commands.registerCommand('memoryBoard.deleteEntry', async (item) => {
       const fp = item?.resourceUri?.fsPath || item?.filePath;
@@ -104,7 +117,8 @@ function activate(context) {
         } else {
           await vscode.workspace.fs.delete(uri);
         }
-        provider.refresh();
+        projectProvider.refresh();
+        userProvider.refresh();
       } catch (err) {
         vscode.window.showErrorMessage(localize('Failed to delete: {0}', err.message));
       }
@@ -124,9 +138,9 @@ function activate(context) {
         } else {
           targetDir = path.dirname(fp);
         }
-      } else if (provider._currentWorkspaceId && provider._parser) {
+      } else if (projectProvider._currentWorkspaceId && projectProvider._parser) {
         // Default to repo directory
-        const repoDir = provider._parser.getMemoriesDir(provider._currentWorkspaceId) + '/repo';
+        const repoDir = projectProvider._parser.getMemoriesDir(projectProvider._currentWorkspaceId) + '/repo';
         targetDir = repoDir;
       }
 
@@ -155,7 +169,8 @@ function activate(context) {
         const filePath = path.join(targetDir, name);
         const uri = vscode.Uri.file(filePath);
         await vscode.workspace.fs.writeFile(uri, Buffer.from(content || '', 'utf8'));
-        provider.refresh();
+        projectProvider.refresh();
+        userProvider.refresh();
         // Open the new file
         const doc = await vscode.workspace.openTextDocument(uri);
         await vscode.window.showTextDocument(doc, { preview: true });
@@ -240,9 +255,9 @@ function getFileIcon(name) {
 }
 
 // ============================================================================
-// Tree Data Provider
+// Tree Data Provider — Project Memories (workspaceStorage)
 // ============================================================================
-class MemoryTreeProvider {
+class ProjectMemoryTreeProvider {
   constructor(context) {
     this.context = context;
     this._parser = undefined;
@@ -484,6 +499,209 @@ class MemoryTreeProvider {
 }
 
 // ============================================================================
+// Tree Data Provider — User Memories (globalStorage)
+// ============================================================================
+class UserMemoryTreeProvider {
+  constructor(context) {
+    this.context = context;
+    this._onDidChangeTreeData = new vscode.EventEmitter();
+    this.onDidChangeTreeData = this._onDidChangeTreeData.event;
+    this._cachedEntries = [];
+    this._memoriesDir = '';
+
+    // Resolve global storage path for user memories
+    const globalStorageUri = context.globalStorageUri;
+    if (globalStorageUri) {
+      // User memories are at: globalStorage/github.copilot-chat/memory-tool/memories/
+      this._memoriesDir = path.join(globalStorageUri.fsPath, '..', 'github.copilot-chat', 'memory-tool', 'memories');
+    }
+
+    this.refresh();
+  }
+
+  refresh() {
+    this._cachedEntries = [];
+    this._onDidChangeTreeData.fire();
+  }
+
+  async getChildren(element) {
+    if (!this._memoriesDir) return [this._emptyItem()];
+
+    if (!element) {
+      // Root level: scan all files and build tree
+      if (this._cachedEntries.length === 0) {
+        await this._scanEntries();
+      }
+      const items = this._buildFileTree();
+      return items.length > 0 ? items : [this._emptyItem()];
+    }
+
+    if (element.type === ITEM_TYPE.DIR) {
+      // Subdirectory: find children from cached entries
+      const prefix = element._dirPrefix || element.label || '';
+      const children = this._cachedEntries.filter(e => {
+        const rel = e.relativePath;
+        if (!rel.startsWith(prefix + '/')) return false;
+        const rest = rel.slice(prefix.length + 1);
+        return rest && !rest.includes('/');
+      });
+      return children.map(e => {
+        if (e.isDirectory) {
+          const item = new MemoryTreeItem(
+            e.relativePath.split('/').pop(),
+            vscode.TreeItemCollapsibleState.Collapsed,
+            ITEM_TYPE.DIR,
+            e.sourceFile,
+            undefined,
+            undefined,
+          );
+          item._dirPrefix = e.relativePath;
+          return item;
+        }
+        return new MemoryTreeItem(
+          e.relativePath.split('/').pop(),
+          vscode.TreeItemCollapsibleState.None,
+          ITEM_TYPE.FILE,
+          e.sourceFile,
+          undefined,
+          undefined,
+        );
+      });
+    }
+
+    return [];
+  }
+
+  async _scanEntries() {
+    this._cachedEntries = [];
+    const entries = await safeReaddir(this._memoriesDir);
+    for (const entry of entries) {
+      const fullPath = path.join(this._memoriesDir, entry.name);
+      const stat = await safeStat(fullPath);
+      const isoTime = stat ? toIso(stat.mtime) : new Date(0).toISOString();
+
+      if (entry.type === 'directory') {
+        this._cachedEntries.push({
+          id: `user::${entry.name}`,
+          content: '',
+          timestamp: isoTime,
+          sourceFile: fullPath,
+          relativePath: entry.name,
+          isDirectory: true,
+        });
+        // Recursively scan subdirectories
+        await this._scanDirRecursive(fullPath, entry.name);
+      } else {
+        let content = '';
+        try { content = await fs.promises.readFile(fullPath, 'utf8'); } catch { continue; }
+        this._cachedEntries.push({
+          id: `user::${entry.name}`,
+          content,
+          timestamp: isoTime,
+          sourceFile: fullPath,
+          relativePath: entry.name,
+          isDirectory: false,
+        });
+      }
+    }
+  }
+
+  async _scanDirRecursive(absoluteDir, relativeDir) {
+    const entries = await safeReaddir(absoluteDir);
+    for (const entry of entries) {
+      const fullPath = path.join(absoluteDir, entry.name);
+      const relativePath = `${relativeDir}/${entry.name}`;
+      const stat = await safeStat(fullPath);
+      const isoTime = stat ? toIso(stat.mtime) : new Date(0).toISOString();
+
+      if (entry.type === 'directory') {
+        this._cachedEntries.push({
+          id: `user::${relativePath}`,
+          content: '',
+          timestamp: isoTime,
+          sourceFile: fullPath,
+          relativePath,
+          isDirectory: true,
+        });
+        await this._scanDirRecursive(fullPath, relativePath);
+      } else {
+        let content = '';
+        try { content = await fs.promises.readFile(fullPath, 'utf8'); } catch { continue; }
+        this._cachedEntries.push({
+          id: `user::${relativePath}`,
+          content,
+          timestamp: isoTime,
+          sourceFile: fullPath,
+          relativePath,
+          isDirectory: false,
+        });
+      }
+    }
+  }
+
+  _buildFileTree() {
+    // Build directory tree from flat entries
+    const dirNames = new Set();
+    const topLevel = [];
+    for (const e of this._cachedEntries) {
+      const rel = e.relativePath;
+      if (rel && !rel.includes('/')) {
+        topLevel.push(e);
+      } else if (rel && rel.includes('/')) {
+        dirNames.add(rel.split('/')[0]);
+      }
+    }
+
+    const result = [];
+    const seen = new Set();
+
+    // Add directories first
+    for (const dirName of dirNames) {
+      seen.add(dirName);
+      const dirEntry = this._cachedEntries.find(e => e.relativePath === dirName);
+      const item = new MemoryTreeItem(
+        dirName,
+        vscode.TreeItemCollapsibleState.Collapsed,
+        ITEM_TYPE.DIR,
+        dirEntry ? dirEntry.sourceFile : '',
+        undefined,
+        undefined,
+      );
+      item._dirPrefix = dirName;
+      result.push(item);
+    }
+
+    // Add files
+    for (const e of topLevel) {
+      if (!seen.has(e.relativePath)) {
+        result.push(new MemoryTreeItem(
+          e.relativePath,
+          vscode.TreeItemCollapsibleState.None,
+          ITEM_TYPE.FILE,
+          e.sourceFile,
+          undefined,
+          undefined,
+        ));
+      }
+    }
+
+    return result;
+  }
+
+  _emptyItem() {
+    return new MemoryTreeItem(
+      localize('No user memories yet.'),
+      vscode.TreeItemCollapsibleState.None,
+      ITEM_TYPE.EMPTY,
+    );
+  }
+
+  getTreeItem(element) {
+    return element;
+  }
+}
+
+// ============================================================================
 // Memory Preview Provider (WebviewView in panel)
 // ============================================================================
 class MemoryPreviewProvider {
@@ -676,6 +894,29 @@ function renderMarkdown(text) {
   html = html.replace(/<p><li>/g, '<li>').replace(/<\/li><\/p>/g, '</li>');
   html = html.replace(/<p><\/p>/g, '');
   return html;
+}
+
+// ============================================================================
+// Helpers (shared by ProjectMemoryTreeProvider and UserMemoryTreeProvider)
+// ============================================================================
+async function safeReaddir(dir) {
+  try {
+    const result = await fs.promises.readdir(dir, { withFileTypes: true });
+    return result.map(e => ({ name: e.name, type: e.isDirectory() ? 'directory' : 'file' }));
+  } catch { return []; }
+}
+
+async function safeStat(p) {
+  try { return await fs.promises.stat(p); } catch { return undefined; }
+}
+
+async function pathExists(p) {
+  try { await fs.promises.access(p); return true; } catch { return false; }
+}
+
+function toIso(t) {
+  const d = typeof t === 'number' ? new Date(t) : t;
+  return d.toISOString();
 }
 
 function getNonce() {

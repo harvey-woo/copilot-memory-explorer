@@ -11,5 +11,6 @@
   "Failed to create memory: {0}": "创建记忆失败：{0}",
   "Could not determine target directory.": "无法确定目标目录。",
   "Select a file in Copilot Memories to preview": "在 Copilot 记忆中选择一个文件以预览",
-  "No memories yet. Create one with the + button above.": "暂无记忆，点击上方 + 按钮创建"
+  "No memories yet. Create one with the + button above.": "暂无记忆，点击上方 + 按钮创建",
+  "No user memories yet.": "暂无全局记忆"
 }
