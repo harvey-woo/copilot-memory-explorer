@@ -2,7 +2,7 @@
   "name": "copilot-memory-explorer",
   "displayName": "%ext.displayName%",
   "description": "%ext.description%",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "publisher": "cat5th",
   "icon": "media/marketplace-icon.png",
   "l10n": "./l10n",
@@ -52,12 +52,13 @@
           "id": "memoryExplorer.userView",
           "name": "%memoryExplorer.userView.name%",
           "type": "tree"
-        },
+        }
+      ],
+      "memory-preview-panel": [
         {
           "id": "memoryExplorer.previewView",
           "name": "%memoryPreview.view.name%",
-          "type": "webview",
-          "visibility": "hidden"
+          "type": "webview"
         }
       ]
     },

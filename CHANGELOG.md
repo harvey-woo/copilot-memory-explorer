@@ -1,5 +1,18 @@
 # Change Log
 
+## [0.1.4] - 2026-07-11
+
+### Added
+
+- **User Memories panel**: new sidebar view reading from `globalStorage` for cross-workspace memories
+- **Project Memories panel**: renamed from original view, scoped to `workspaceStorage`
+- Preview panel now hidden by default, can be enabled via Views menu
+
+### Changed
+
+- Sidebar split into two independent views: "Project Memories" and "User Memories"
+- Updated all 11 language localizations with new view names
+
 ## [0.1.3] - 2026-07-09
 
 ### Changed
